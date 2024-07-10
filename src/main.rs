@@ -69,13 +69,19 @@ fn main() {
                 });
 
                 let search = prompt("Search: ");
+                let mut found = false;
                 for item in &services {
                     if item.service.as_str() == search.as_str() {
                         println!(
                             "Service: {}\n- Username: {}\n- Password: {}",
                             item.service, item.username, item.password
                         );
+                        found = true;
+                        break;
                     }
+                }
+                if !found {
+                    println!("This service is not in our database..Please try again");
                 }
             }
 

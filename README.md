@@ -51,8 +51,3 @@ Ensure you have Rust installed on your machine. You can download it from [here](
     - **2. List Entries**: View all stored entries.
     - **3. Search Entry**: Search for an entry by service name.
     - **4. Exit Now**: Exit the application.
-
-## 📘 Example
-
-Adding a new entry:
-
