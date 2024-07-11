@@ -27,7 +27,6 @@ impl ServiceInfo {
         let service = prompt("Enter Service Name: ");
         let username = prompt("Enter Your Username: ");
         let password = prompt("Enter Your Password: ");
-
         ServiceInfo::new(service, username, password)
     }
 
@@ -103,6 +102,40 @@ pub fn delete_from_file() -> Result<(), io::Error> {
     Ok(())
 }
 
+pub fn update_entry() -> Result<(), io::Error> {
+    let service_name = prompt("Service Name to update: ");
+    let mut services = read_passwords_from_file()?;
+    let mut found = false;
+
+    for service in &mut services {
+        if service.service == service_name {
+            found = true;
+            service.service = prompt("Enter New Service Name: ");
+            service.username = prompt("Enter Your New Username: ");
+            service.password = prompt("Enter Your New Password: ");
+        }
+    }
+
+    if found {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .truncate(true)
+            .open("passwords.json")?;
+
+        for service in &services {
+            let json_output = format!("{}\n", service.to_json());
+            if let Err(e) = file.write_all(json_output.as_bytes()) {
+                eprintln!("Error writing to file: {}", e);
+            }
+        }
+
+        println!("Service '{}' updated successfully.", service_name);
+    } else {
+        println!("Service '{}' not found in database.", service_name);
+    }
+
+    Ok(())
+}
 
 pub fn prompt(prompt: &str) -> String {
     print!("{}", prompt);

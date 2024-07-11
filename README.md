@@ -8,6 +8,7 @@
 <li> **📜 List Entries**: View all stored password entries in a clear format.</li>
 <li> **🔍 Search Entries**: Quickly find a specific password entry by service name.</li>
 <li> **🔐 Delete Entries**: Delete entry with a service name.</li>
+<li> **🔐 Update Entries**: Update entry stored in a JSON file.</li>
 <li> **🛡️ Secure Storage**: Passwords are securely stored in a JSON file.</li>
 <br>
 <p>## 🛠️ Prerequisites</p>
@@ -45,12 +46,14 @@ Ensure you have Rust installed on your machine. You can download it from [here](
     2. List Entries
     3. Search Entry
     4. Delete Entry
-    5. Exit Now
+    5. Update Entry
+    6. Exit Now
     ```
 
 3. **Choose an option by entering the corresponding number**:
     - **1. Add Entry**: Follow the prompts to add a new entry.
     - **2. List Entries**: View all stored entries.
     - **3. Search Entry**: Search for an entry by service name.
-    - **5. Delete Entry**: Delete the stored entry.
-    - **5. Exit Now**: Exit the application.
+    - **4. Delete Entry**: Delete the stored entry.
+    - **5. Update Entry**: Update stored entry.
+    - **6. Exit Now**: Exit the application.
