@@ -54,7 +54,7 @@ impl ServiceInfo {
 pub fn read_passwords_from_file() -> Result<Vec<ServiceInfo>, io::Error> {
     let file = File::open("passwords.json")?;
     let reader = io::BufReader::new(file);
-    let mut services = Vec::new();
+    let mut services: Vec<ServiceInfo> = Vec::new();
 
     for line in reader.lines() {
         if let Ok(json_string) = line {
@@ -65,6 +65,44 @@ pub fn read_passwords_from_file() -> Result<Vec<ServiceInfo>, io::Error> {
     }
     Ok(services)
 }
+
+pub fn delete_from_file() -> Result<(), io::Error> {
+    println!("Please give me the name of the service you want to delete:");
+    let service_name = prompt("Service Name: ");
+
+    let mut services = read_passwords_from_file()?;
+    let mut found = false;
+
+    services.retain(|service| {
+        if service.service == service_name {
+            found = true;
+            false // Exclude this service from the retained list
+        } else {
+            true // Keep this service in the list
+        }
+    });
+
+    if found {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .truncate(true)
+            .open("passwords.json")?;
+
+        for service in &services {
+            let json_output = format!("{}\n", service.to_json());
+            if let Err(e) = file.write_all(json_output.as_bytes()) {
+                eprintln!("Error writing to file: {}", e);
+            }
+        }
+
+        println!("Service '{}' deleted successfully.", service_name);
+    } else {
+        println!("Service '{}' not found in database.", service_name);
+    }
+
+    Ok(())
+}
+
 
 pub fn prompt(prompt: &str) -> String {
     print!("{}", prompt);

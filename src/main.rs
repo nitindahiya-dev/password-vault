@@ -1,6 +1,6 @@
 mod pentry;
 
-use crate::pentry::{prompt, read_passwords_from_file, ServiceInfo};
+use crate::pentry::{prompt, read_passwords_from_file, delete_from_file, ServiceInfo};
 
 fn clr() {
     // This escape code clears the terminal screen
@@ -28,7 +28,8 @@ fn main() {
         println!("1. Add Entry");
         println!("2. List Entries");
         println!("3. Search Entry");
-        println!("4. Exit Now");
+        println!("4. Delete");
+        println!("5. Exit Now");
 
         let mut choice = String::new();
         std::io::stdin().read_line(&mut choice).unwrap();
@@ -69,7 +70,7 @@ fn main() {
                 });
 
                 let search = prompt("Search: ");
-                let mut found = false;
+                let mut found: bool = false;
                 for item in &services {
                     if item.service.as_str() == search.as_str() {
                         println!(
@@ -87,13 +88,22 @@ fn main() {
 
             "4" => {
                 clr();
+
+                match delete_from_file() {
+                    Ok(_) => println!("Service deleted successfully."),
+                    Err(e) => eprintln!("Error deleting service: {}", e),
+                }
+            }
+
+            "5" => {
+                clr();
                 println!("Feel Free to Try Again Later");
                 break;
             }
 
-            _ => println!("Please Use Option 1, 2, 3 or 4."),
+            _ => println!("Please Use Option 1, 2, 3, 4 or 5."),
         }
 
-        println!("\n\n")
+        println!("\n\n");
     }
 }
